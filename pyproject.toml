@@ -92,6 +92,7 @@ optional = [
   "scipy",  # optuna/_gp.
   "torch",  # optuna/_gp.
   "grpcio",  # optuna/storages/_grpc.
+  "grpcio-health-checking",  # optuna/storages/_grpc.
   "protobuf>=5.28.1",  # optuna/storages/_grpc.
 ]
 test = [
@@ -104,6 +105,7 @@ test = [
   "scipy>=1.9.2",
   "torch",  # optuna/_gp.
   "grpcio",  # optuna/storages/_grpc.
+  "grpcio-health-checking",  # optuna/storages/_grpc.
   "protobuf>=5.28.1",  # optuna/storages/_grpc.
 ]
 

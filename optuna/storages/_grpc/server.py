@@ -11,6 +11,8 @@ from optuna.storages import BaseStorage
 
 if TYPE_CHECKING:
     import grpc
+    from grpc_health.v1 import health
+    from grpc_health.v1 import health_pb2_grpc
 
     from optuna.storages._grpc import servicer as grpc_servicer
     from optuna.storages._grpc.auto_generated import api_pb2_grpc
@@ -18,6 +20,8 @@ else:
     grpc = _LazyImport("grpc")
     grpc_servicer = _LazyImport("optuna.storages._grpc.servicer")
     api_pb2_grpc = _LazyImport("optuna.storages._grpc.auto_generated.api_pb2_grpc")
+    health = _LazyImport("grpc_health.v1.health")
+    health_pb2_grpc = _LazyImport("grpc_health.v1.health_pb2_grpc")
 
 
 _logger = logging.get_logger(__name__)
@@ -28,6 +32,7 @@ def make_server(
     storage: BaseStorage, host: str, port: int, thread_pool: ThreadPoolExecutor | None = None
 ) -> grpc.Server:
     server = grpc.server(thread_pool or ThreadPoolExecutor(max_workers=10))
+    health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)
     api_pb2_grpc.add_StorageServiceServicer_to_server(
         grpc_servicer.OptunaStorageProxyService(storage), server
     )
